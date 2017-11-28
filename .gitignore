@@ -1,0 +1,8 @@
+obj
+packages
+Assets/tessdata/._mrz.traineddata
+Assets/tessdata/._nl.traineddata
+Assets/tessdata/._ocrb.traineddata
+Assets/tessdata/mrz.traineddata
+Assets/tessdata/nl.traineddata
+Assets/tessdata/ocrb.traineddata
