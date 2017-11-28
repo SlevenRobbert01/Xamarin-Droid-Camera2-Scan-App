@@ -22,7 +22,7 @@ namespace ScanPac.Listeners
 
         public void OnImageAvailable(ImageReader reader)
         {
-            if(Owner.mBackgroundHandler != null)
+            if(Owner.mBackgroundHandler != null && !Owner.capturingImage)
             {
                 Owner.mBackgroundHandler.Post(new ImageSaver(reader.AcquireNextImage(), File, scanModule) { Owner = Owner });
             }
@@ -60,7 +60,7 @@ namespace ScanPac.Listeners
                 var bitmap = BitmapHelper.BytesToBitmap(bytes);
                 bitmap = BitmapHelper.GrayscaleToBin(bitmap);
                 var newBytes = BitmapHelper.BitmapToBytes(bitmap);
-                //mImage.Close();
+
                 SaveImage(newBytes);
                 ResetCapturingImage();
                 TriggerScanImage(newBytes);
@@ -78,15 +78,12 @@ namespace ScanPac.Listeners
                     {
                         e.PrintStackTrace();
                     }
-                    finally
-                    {
-                        mImage.Close();
-                    }
                 }
             }
 
             async Task ResetCapturingImage(){
                 await Task.Delay(2000);
+                mImage.Close();
                 Owner.capturingImage = false;
             }
 

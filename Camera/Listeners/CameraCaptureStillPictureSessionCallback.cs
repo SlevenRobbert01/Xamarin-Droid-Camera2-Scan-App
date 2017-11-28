@@ -34,13 +34,5 @@ namespace ScanPac.Listeners
             Owner.UnlockFocus();
 
         }
-
-        void TriggerScanImageAsync(string path)
-        {
-            if (scanModule != null)
-            {
-                scanModule.ScanImage(path);
-            }
-        }
     }
 }

@@ -84,7 +84,7 @@ namespace ScanPac
         public Handler mBackgroundHandler;
 
         // An {@link ImageReader} that handles still image capture.
-        private ImageReader mImageReader;
+        public ImageReader mImageReader;
 
         // This is the output file for our picture.
         public File mFile;
@@ -117,6 +117,8 @@ namespace ScanPac
         private TesseractScanModule scanModule;
 
         public bool capturingImage;
+
+        public Activity mActivity;
 
         // Shows a {@link Toast} on the UI thread.
         public void ShowToast(string text)
@@ -192,6 +194,7 @@ namespace ScanPac
         public Camera2BasicFragment(TesseractScanModule module)
         {
             scanModule = module;
+            mActivity = this.Activity;
         }
 
         public static Camera2BasicFragment NewInstance(TesseractScanModule module)
@@ -214,7 +217,7 @@ namespace ScanPac
 
             var file = new File(Activity.GetExternalFilesDir(null), "pic.jpg");
             this.mOnImageAvailableListener = new ImageAvailableListener(scanModule) { Owner = this, File = file };
-            this.mCaptureCallback = new CameraCaptureListener() { Owner = this, File = file};
+            //this.mCaptureCallback = new CameraCaptureListener() { Owner = this, File = file};
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -624,13 +627,15 @@ namespace ScanPac
             try
             {
                 var activity = Activity;
-                if (null == activity || null == mCameraDevice)
+                if (null == activity || null == mCameraDevice || capturingImage)
                 {
                     return;
                 }
                 // This is the CaptureRequest.Builder that we use to take a picture.
                 CaptureRequest.Builder captureBuilder = mCameraDevice.CreateCaptureRequest(CameraTemplate.StillCapture);
                 captureBuilder.AddTarget(mImageReader.Surface);
+
+                captureBuilder.Set(CaptureRequest.ControlMode, (int)ControlMode.Auto);
 
                 // Use the same AE and AF modes as the preview.
                 captureBuilder.Set(CaptureRequest.ControlAfMode, (int)ControlAFMode.ContinuousPicture);
@@ -650,7 +655,7 @@ namespace ScanPac
         }
 
         // Retrieves the JPEG orientation from the specified screen rotation.
-        private int GetOrientation(int rotation)
+        public int GetOrientation(int rotation)
         {
             // Sensor orientation is 90 for most devices, or 270 for some devices (eg. Nexus 5X)
             // We have to take that into account and rotate JPEG properly.
@@ -665,15 +670,18 @@ namespace ScanPac
         {
             try
             {
-                // Reset the auto-focus trigger
-                mPreviewRequestBuilder.Set(CaptureRequest.ControlAfTrigger, (int)ControlAFTrigger.Cancel);
-                SetAutoFlash(mPreviewRequestBuilder);
-                mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback,
-                        mBackgroundHandler);
-                // After this, the camera will go back to the normal state of preview.
-                mState = STATE_PREVIEW;
-                mCaptureSession.SetRepeatingRequest(mPreviewRequest, mCaptureCallback,
-                        mBackgroundHandler);
+                if(mCaptureSession != null){
+                    // Reset the auto-focus trigger
+                    mPreviewRequestBuilder.Set(CaptureRequest.ControlAfTrigger, (int)ControlAFTrigger.Cancel);
+                    SetAutoFlash(mPreviewRequestBuilder);
+                    mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback,
+                            mBackgroundHandler);
+                    // After this, the camera will go back to the normal state of preview.
+                    mState = STATE_PREVIEW;
+                    mCaptureSession.SetRepeatingRequest(mPreviewRequest, mCaptureCallback,
+                            mBackgroundHandler);
+                }
+               
             }
             catch (CameraAccessException e)
             {
