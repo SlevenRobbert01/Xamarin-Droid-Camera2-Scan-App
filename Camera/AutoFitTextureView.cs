@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.App;
 using Android.Content;
 using Android.Util;
 using Android.Views;
@@ -9,21 +10,22 @@ namespace ScanPac
 	{
 		private int mRatioWidth = 1;
 		private int mRatioHeight = 1;
+        private Context _context;
 
 		public AutoFitTextureView(Context context)
 			: this (context, null)
 		{
-
+            _context = context;
 		}
 		public AutoFitTextureView (Context context, IAttributeSet attrs)
 			: this (context, attrs, 0)
 		{
-
+            _context = context;
 		}
 		public AutoFitTextureView (Context context, IAttributeSet attrs, int defStyle)
 			: base (context, attrs, defStyle)
 		{
-
+            _context = context;
 		}
 
 		public void SetAspectRatio(int width, int height)
@@ -40,6 +42,7 @@ namespace ScanPac
 			base.OnMeasure (widthMeasureSpec, heightMeasureSpec);
 			int width = MeasureSpec.GetSize (widthMeasureSpec);
 			int height = MeasureSpec.GetSize (heightMeasureSpec);
+
 			if (0 == mRatioWidth || 0 == mRatioHeight) {
 				SetMeasuredDimension (width, height);
 			} else {

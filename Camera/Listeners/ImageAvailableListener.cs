@@ -15,6 +15,7 @@ namespace ScanPac.Listeners
         public File File { get; set; }
         public Camera2BasicFragment Owner { get; set; }
         private TesseractScanModule scanModule;
+        private ImageReader _reader;
 
         public ImageAvailableListener(TesseractScanModule module){
             scanModule = module;
@@ -22,8 +23,9 @@ namespace ScanPac.Listeners
 
         public void OnImageAvailable(ImageReader reader)
         {
-            if(Owner.mBackgroundHandler != null && !Owner.capturingImage)
+            if(Owner.mBackgroundHandler != null || !Owner.capturingImage)
             {
+                Owner.capturingImage = true;
                 Owner.mBackgroundHandler.Post(new ImageSaver(reader.AcquireNextImage(), File, scanModule) { Owner = Owner });
             }
         }
@@ -45,7 +47,6 @@ namespace ScanPac.Listeners
 
             public async void Run()
             {
-                Owner.capturingImage = true;
                 await Task.Run(() =>
                 {
                     ParseImage(mImage);
@@ -57,12 +58,13 @@ namespace ScanPac.Listeners
                 byte[] bytes = new byte[buffer.Remaining()];
                 buffer.Get(bytes);
 
+                mImage.Close();
+
                 var bitmap = BitmapHelper.BytesToBitmap(bytes);
                 bitmap = BitmapHelper.GrayscaleToBin(bitmap);
                 var newBytes = BitmapHelper.BitmapToBytes(bitmap);
 
                 SaveImage(newBytes);
-                ResetCapturingImage();
                 TriggerScanImage(newBytes);
             }
 
@@ -81,18 +83,13 @@ namespace ScanPac.Listeners
                 }
             }
 
-            async Task ResetCapturingImage(){
-                await Task.Delay(2000);
-                mImage.Close();
-                Owner.capturingImage = false;
-            }
-
             async Task TriggerScanImage(byte[] bytes)
             {
                 if(scanModule != null)
                 {
                     await scanModule.ScanImage(bytes);
                 }
+                Owner.capturingImage = false;
             }
         }
     }

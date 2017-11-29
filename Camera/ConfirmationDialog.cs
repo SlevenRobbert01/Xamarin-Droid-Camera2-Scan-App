@@ -4,6 +4,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V13.App;
+using ScanPac.Camera;
 
 namespace ScanPac
 {
@@ -14,8 +15,11 @@ namespace ScanPac
         {
             public void OnClick(IDialogInterface dialog, int which)
             {
-                FragmentCompat.RequestPermissions(mParent,
-                                new string[] { Manifest.Permission.Camera }, Camera2BasicFragment.REQUEST_CAMERA_PERMISSION);
+                FragmentCompat.RequestPermissions(
+                    mParent, 
+                    new string[] { Manifest.Permission.Camera }, 
+                    CameraConstants.REQUEST_CAMERA_PERMISSION
+                );
             }
         }
 

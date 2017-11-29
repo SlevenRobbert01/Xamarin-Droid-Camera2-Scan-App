@@ -36,9 +36,12 @@ namespace ScanPac.Listeners
                 Owner.mPreviewRequestBuilder.Set(CaptureRequest.JpegOrientation, Owner.GetOrientation(rotation));
 
                 // Auto focus should be continuous for camera preview.
-                Owner.mPreviewRequestBuilder.Set(CaptureRequest.ControlAfMode, (int)ControlAFMode.ContinuousPicture);
+                Owner.mPreviewRequestBuilder.Set(CaptureRequest.ControlAfMode, (int)ControlAFMode.ContinuousVideo);
                 // Flash is automatically enabled when necessary.
                 //Owner.SetAutoFlash(Owner.mPreviewRequestBuilder);
+
+                Owner.mPreviewRequestBuilder.Set(CaptureRequest.ControlMode, (int)ControlMode.Auto);
+                Owner.mPreviewRequestBuilder.Set(CaptureRequest.StatisticsFaceDetectMode, (int)StatisticsFaceDetectMode.Off);
 
                 // Finally, we start displaying the camera preview.
                 Owner.mPreviewRequest = Owner.mPreviewRequestBuilder.Build();

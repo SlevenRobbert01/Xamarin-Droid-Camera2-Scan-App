@@ -1,19 +1,19 @@
 ﻿<Properties StartupConfiguration="{162B5202-48DB-414C-AD6E-D5E28C301A91}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Camera/Camera2BasicFragment.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Camera/Classes/CameraConstants.cs">
     <Files>
       <File FileName="MainActivity.cs" Line="12" Column="1" />
       <File FileName="ScanActivity.cs" Line="27" Column="13" />
-      <File FileName="Camera/CameraActivity.cs" Line="30" Column="13" />
-      <File FileName="Camera/Camera2BasicFragment.cs" Line="626" Column="40" />
-      <File FileName="scanmodules/TesseractScanModule.cs" Line="70" Column="71" />
-      <File FileName="Camera/Listeners/ImageAvailableListener.cs" Line="78" Column="22" />
+      <File FileName="Camera/CameraActivity.cs" Line="62" Column="1" />
+      <File FileName="Camera/Camera2BasicFragment.cs" Line="38" Column="9" />
+      <File FileName="scanmodules/TesseractScanModule.cs" Line="39" Column="1" />
+      <File FileName="Camera/Listeners/ImageAvailableListener.cs" Line="29" Column="85" />
       <File FileName="Camera/Listeners/CameraCaptureListener.cs" Line="30" Column="50" />
-      <File FileName="Camera/Listeners/CameraCaptureStillPictureSessionCallback.cs" Line="27" Column="39" />
+      <File FileName="Camera/Listeners/CameraCaptureStillPictureSessionCallback.cs" Line="36" Column="10" />
       <File FileName="Camera/Listeners/CameraStateListener.cs" Line="15" Column="19" />
-      <File FileName="Camera/Listeners/CameraCaptureSessionCallback.cs" Line="39" Column="1" />
+      <File FileName="Camera/Listeners/CameraCaptureSessionCallback.cs" Line="44" Column="45" />
       <File FileName="Camera/Listeners/Camera2BasicSurfaceTextureListener.cs" Line="17" Column="1" />
       <File FileName="Camera/Helpers/BitmapHelper.cs" Line="42" Column="30" />
-      <File FileName="Camera/AutoFitTextureView.cs" Line="36" Column="1" />
+      <File FileName="Camera/AutoFitTextureView.cs" Line="32" Column="4" />
       <File FileName="Camera/CompareSizesByArea.cs" Line="7" Column="18" />
       <File FileName="Properties/AndroidManifest.xml" Line="6" Column="12" />
       <File FileName="NativeScanLib/MyClass.cs" Line="9" Column="1" />
@@ -25,18 +25,16 @@
       <File FileName="NativeScanLib/Dictionaries/CheckDigits.cs" Line="18" Column="24" />
       <File FileName="Camera/ConfirmationDialog.cs" Line="1" Column="1" />
       <File FileName="NativeScanLib/Helpers/PassportParserHelper.cs" Line="30" Column="1" />
+      <File FileName="Camera/Classes/ShowToastRunnable.cs" Line="23" Column="6" />
+      <File FileName="Camera/Helpers/CameraHelper.cs" Line="17" Column="44" />
+      <File FileName="Camera/Classes/CameraConstants.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/robbertsleven/Documents/Projects/ScanPac/Camera/Listeners/CameraCaptureSessionCallback.cs" relfile="Camera/Listeners/CameraCaptureSessionCallback.cs" line="23" column="1" />
-      <Breakpoint file="/Users/robbertsleven/Documents/Projects/ScanPac/Camera/Listeners/Camera2BasicSurfaceTextureListener.cs" relfile="Camera/Listeners/Camera2BasicSurfaceTextureListener.cs" line="17" column="19" />
-      <Breakpoint file="/Users/robbertsleven/Documents/Projects/ScanPac/Camera/Camera2BasicFragment.cs" relfile="Camera/Camera2BasicFragment.cs" line="248" column="17" />
-      <Breakpoint file="/Users/robbertsleven/Documents/Projects/ScanPac/Camera/Listeners/ImageAvailableListener.cs" relfile="Camera/Listeners/ImageAvailableListener.cs" line="56" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.ScanPac AndroidDesignerPreferredDevice="Nexus 5" PreferredExecutionTarget="Android.4d7fcb16" />
+  <MonoDevelop.Ide.ItemProperties.ScanPac AndroidDesignerPreferredDevice="Nexus 5" PreferredExecutionTarget="Android.SelectDevice" />
 </Properties>

@@ -6,8 +6,10 @@
         android:id="@+id/texture"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="false"
+        android:layout_alignWithParentIfMissing="false" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

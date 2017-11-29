@@ -105,6 +105,9 @@
     <Compile Include="Camera\Listeners\ImageAvailableListener.cs" />
     <Compile Include="Camera\CameraActivity.cs" />
     <Compile Include="Camera\Helpers\BitmapHelper.cs" />
+    <Compile Include="Camera\Classes\ShowToastRunnable.cs" />
+    <Compile Include="Camera\Helpers\CameraHelper.cs" />
+    <Compile Include="Camera\Classes\CameraConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -128,6 +131,7 @@
     <Folder Include="Resources\drawable\" />
     <Folder Include="scanmodules\" />
     <Folder Include="Camera\Helpers\" />
+    <Folder Include="Camera\Classes\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\tessdata\._mrz.traineddata" />

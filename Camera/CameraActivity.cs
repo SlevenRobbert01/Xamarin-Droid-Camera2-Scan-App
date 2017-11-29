@@ -51,7 +51,7 @@ namespace ScanPac
                                                      result.Nationality.Value,
                                                      result.NationalNumber
                                                     );
-                    Toast.MakeText(this, resultString, ToastLength.Long).Show();
+                    Toast.MakeText(this, resultString, ToastLength.Short).Show();
                 });
             };
         }
