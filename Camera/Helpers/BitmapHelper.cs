@@ -39,17 +39,42 @@ namespace ScanPac.Camera.Helpers
             return bmpGrayscale;
         }
 
+        static int[] CropPixels(int[] pixels, int x1, int x2, int width){
+            int nrOfPixels = (x2 - x1) * width;
+            var results = new int[nrOfPixels];
+            Array.Copy(pixels,x1 * width, results, 0, nrOfPixels);
+            return results;
+        }
+
+        public static Bitmap CropBitmap(Bitmap bm, int x1, int x2){
+            int width = bm.Width;
+            int height = bm.Height;
+            int[] pixels;
+
+            pixels = new int[width * height];
+            bm.GetPixels(pixels, 0, width, 0, 0, width, height);
+
+            pixels = CropPixels(pixels, x1, x2, width);
+            height = x2 - x1;
+
+            var resultBitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Rgb565);
+            resultBitmap.SetPixels(pixels, 0, width, 0, 0, width, height);
+
+            return resultBitmap;
+        }
+
         public static Bitmap GrayscaleToBin(Bitmap bm2)
+
         {
             Bitmap bm;
             bm = bm2.Copy(Bitmap.Config.Rgb565, true);
             int width = bm.Width;
             int height = bm.Height;
 
-            int pixel1, pixel2, pixel3, pixel4, A, R;
             int[] pixels;
             pixels = new int[width * height];
             bm.GetPixels(pixels, 0, width, 0, 0, width, height);
+
             int size = width * height;
             int s = width / 8;
             int s2 = s >> 1;

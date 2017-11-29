@@ -155,6 +155,13 @@ namespace ScanPac
             base.OnPause();
         }
 
+        public override void OnConfigurationChanged(Android.Content.Res.Configuration newConfig)
+        {
+            base.OnConfigurationChanged(newConfig);
+
+            SetTextureAspectRatio(newConfig.Orientation);
+        }
+
         private void RequestCameraPermission()
         {
             if (FragmentCompat.ShouldShowRequestPermissionRationale(this, Manifest.Permission.Camera))
@@ -178,7 +185,6 @@ namespace ScanPac
                            .Show(ChildFragmentManager, CameraConstants.FRAGMENT_DIALOG);
             }
         }
-
 
         // Sets up member variables related to camera.
         private void SetUpCameraOutputs(int width, int height)
@@ -209,7 +215,7 @@ namespace ScanPac
                     var customSize = new Size(640, 480);
                     Size largest = (Size)Collections.Max(Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg)),
                         new CompareSizesByArea());
-                    mImageReader = ImageReader.NewInstance(customSize.Width, customSize.Height, ImageFormatType.Jpeg, /*maxImages*/20);
+                    mImageReader = ImageReader.NewInstance(customSize.Width, customSize.Height, ImageFormatType.Jpeg, /*maxImages*/2);
                     mImageReader.SetOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
 
                     // Find out if we need to swap dimension to get the preview size relative to sensor
@@ -237,7 +243,7 @@ namespace ScanPac
                         default:
                             Log.Error(CameraConstants.TAG, "Display rotation is invalid: " + displayRotation);
                             break;
-                    }
+                    } 
 
                     Point displaySize = new Point();
                     activity.WindowManager.DefaultDisplay.GetSize(displaySize);
@@ -272,15 +278,7 @@ namespace ScanPac
                         maxPreviewHeight, largest);
 
                     // We fit the aspect ratio of TextureView to the size of preview we picked.
-                    var orientation = Resources.Configuration.Orientation;
-                    if (orientation == Orientation.Landscape)
-                    {
-                        mTextureView.SetAspectRatio(mPreviewSize.Width, mPreviewSize.Height);
-                    }
-                    else
-                    {
-                        mTextureView.SetAspectRatio(mPreviewSize.Height, mPreviewSize.Width);
-                    }
+                    SetTextureAspectRatio(Resources.Configuration.Orientation);
 
                     // Check if the flash is supported.
                     var available = (Boolean)characteristics.Get(CameraCharacteristics.FlashInfoAvailable);
@@ -570,6 +568,19 @@ namespace ScanPac
             if (mFlashSupported)
             {
                 requestBuilder.Set(CaptureRequest.ControlAeMode, (int)ControlAEMode.OnAutoFlash);
+            }
+        }
+
+        private void SetTextureAspectRatio(Orientation orientation)
+        {
+            var metrix = Resources.DisplayMetrics;
+            if (orientation == Orientation.Landscape)
+            {
+                mTextureView.SetAspectRatio(metrix.WidthPixels, metrix.HeightPixels);
+            }
+            else
+            {
+                mTextureView.SetAspectRatio(metrix.HeightPixels, metrix.WidthPixels);
             }
         }
     }

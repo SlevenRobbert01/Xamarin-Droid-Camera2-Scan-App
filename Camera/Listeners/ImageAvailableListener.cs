@@ -1,6 +1,7 @@
 
 using System.Threading.Tasks;
 using Android.Media;
+using Android.Util;
 using Java.IO;
 using Java.Lang;
 using Java.Nio;
@@ -15,7 +16,6 @@ namespace ScanPac.Listeners
         public File File { get; set; }
         public Camera2BasicFragment Owner { get; set; }
         private TesseractScanModule scanModule;
-        private ImageReader _reader;
 
         public ImageAvailableListener(TesseractScanModule module){
             scanModule = module;
@@ -23,49 +23,73 @@ namespace ScanPac.Listeners
 
         public void OnImageAvailable(ImageReader reader)
         {
-            if(Owner.mBackgroundHandler != null || !Owner.capturingImage)
-            {
-                Owner.capturingImage = true;
-                Owner.mBackgroundHandler.Post(new ImageSaver(reader.AcquireNextImage(), File, scanModule) { Owner = Owner });
+            var image = reader.AcquireLatestImage();
+            if(Owner.capturingImage){
+                if(image != null) {
+                    image.Close();
+                }
+
+                return;
+            }
+
+            Owner.capturingImage = true;
+
+            ByteBuffer buffer = image.GetPlanes()[0].Buffer;
+            byte[] bytes = new byte[buffer.Remaining()];
+            buffer.Get(bytes);
+
+            image.Close();
+
+            if(Owner.mBackgroundHandler != null)
+            {                
+                Owner.mBackgroundHandler.Post(new ImageSaver(bytes, File, scanModule) { Owner = Owner });
             }
         }
 
         // Saves a JPEG {@link Image} into the specified {@link File}.
         private class ImageSaver : Java.Lang.Object, IRunnable
         {
-            private Image mImage;
+            private byte[] mBytes;
             private File mFile;
             private TesseractScanModule scanModule;
             public Camera2BasicFragment Owner { get; set; }
 
-            public ImageSaver(Image image, File file, TesseractScanModule module)
+            public ImageSaver(byte[] bytes, File file, TesseractScanModule module)
             {
-                mImage = image;
+                mBytes = bytes;
                 mFile = file;
                 scanModule = module;
             } 
 
-            public async void Run()
+            public void Run()
             {
-                await Task.Run(() =>
+                Task.Run(async () => 
                 {
-                    ParseImage(mImage);
+                    
+                    await ParseImage(mBytes);
+
+
+                    Owner.capturingImage = false;
                 });
             }
 
-            void ParseImage(Image image){
-                ByteBuffer buffer = image.GetPlanes()[0].Buffer;
-                byte[] bytes = new byte[buffer.Remaining()];
-                buffer.Get(bytes);
-
-                mImage.Close();
+            async Task ParseImage(byte[] bytes){
+                var sw = new System.Diagnostics.Stopwatch();
+                sw.Start();
 
                 var bitmap = BitmapHelper.BytesToBitmap(bytes);
+                bitmap = BitmapHelper.CropBitmap(bitmap, 220, 420);
                 bitmap = BitmapHelper.GrayscaleToBin(bitmap);
                 var newBytes = BitmapHelper.BitmapToBytes(bitmap);
 
+                sw.Stop();
+                Log.Debug("STOPWATCH", sw.ElapsedMilliseconds.ToString());
                 SaveImage(newBytes);
-                TriggerScanImage(newBytes);
+                sw.Reset();
+                sw.Start();
+                await TriggerScanImage(newBytes);
+                sw.Stop();
+                Log.Debug("STOPWATCH2", sw.ElapsedMilliseconds.ToString());
             }
 
             void SaveImage(byte[] bytes)
@@ -89,7 +113,6 @@ namespace ScanPac.Listeners
                 {
                     await scanModule.ScanImage(bytes);
                 }
-                Owner.capturingImage = false;
             }
         }
     }
