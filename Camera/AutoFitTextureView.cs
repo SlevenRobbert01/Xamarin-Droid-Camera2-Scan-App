@@ -8,8 +8,8 @@ namespace ScanPac
 {
 	public class AutoFitTextureView : TextureView
 	{
-		private int mRatioWidth = 1;
-		private int mRatioHeight = 1;
+		private int mRatioWidth = 0;
+		private int mRatioHeight = 0;
         private Context _context;
 
 		public AutoFitTextureView(Context context)

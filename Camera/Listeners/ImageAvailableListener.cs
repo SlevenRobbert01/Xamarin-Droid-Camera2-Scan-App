@@ -5,6 +5,7 @@ using Android.Util;
 using Java.IO;
 using Java.Lang;
 using Java.Nio;
+using ScanPac.Camera;
 using ScanPac.Camera.Helpers;
 using ScanPac.scanmodules;
 
@@ -78,7 +79,12 @@ namespace ScanPac.Listeners
                 sw.Start();
 
                 var bitmap = BitmapHelper.BytesToBitmap(bytes);
-                bitmap = BitmapHelper.CropBitmap(bitmap, 220, 420);
+                var middle = CameraConstants.CustomSize.Height / 2;
+
+                var x1 = (middle - (middle / 2));
+                var x2 = (middle + (middle / 2));
+
+                bitmap = BitmapHelper.CropBitmap(bitmap, x1, x2);
                 bitmap = BitmapHelper.GrayscaleToBin(bitmap);
                 var newBytes = BitmapHelper.BitmapToBytes(bitmap);
 

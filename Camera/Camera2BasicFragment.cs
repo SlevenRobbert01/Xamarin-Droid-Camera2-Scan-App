@@ -75,6 +75,11 @@ namespace ScanPac
         private TesseractScanModule scanModule;
         public bool capturingImage;
         public Activity mActivity;
+        private View topOverlay;
+        private View bottomOverlay;
+
+        public Orientation mOrientation;
+
         // Shows a {@link Toast} on the UI thread.
         public void ShowToast(string text)
         {
@@ -121,6 +126,8 @@ namespace ScanPac
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             mTextureView = (AutoFitTextureView)view.FindViewById(Resource.Id.texture);
+            topOverlay = (View)view.FindViewById(Resource.Id.overlayTop);
+            bottomOverlay = (View)view.FindViewById(Resource.Id.overlayBottom);
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)
@@ -157,9 +164,40 @@ namespace ScanPac
 
         public override void OnConfigurationChanged(Android.Content.Res.Configuration newConfig)
         {
-            base.OnConfigurationChanged(newConfig);
+            
+            mOrientation = newConfig.Orientation;
+            SetTextureAspectRatio(mOrientation);
+            ConfigureTransform(mPreviewSize.Width, mPreviewSize.Height);
 
-            SetTextureAspectRatio(newConfig.Orientation);
+            base.OnConfigurationChanged(newConfig);
+        }
+
+        private void ConfigureOverlayViews(int width, int height)
+        {
+            var overlayHeigth = height / 3;
+            if (topOverlay != null)
+            {
+                topOverlay.SetBackgroundColor(Color.Black); // black with a variable alpha
+                topOverlay.Background.SetAlpha(90);
+                FrameLayout.LayoutParams parameters =
+                               new FrameLayout.LayoutParams(width, overlayHeigth);
+                parameters.Gravity = GravityFlags.Top;
+                topOverlay.LayoutParameters = parameters;
+                topOverlay.Invalidate();
+            }
+
+            if(bottomOverlay != null){
+                var screenHeight = Resources.DisplayMetrics.HeightPixels;
+                var bottom = screenHeight - height;
+
+                bottomOverlay.SetBackgroundColor(Color.Black); // black with a variable alpha
+                bottomOverlay.Background.SetAlpha(90);
+                FrameLayout.LayoutParams parameters =
+                               new FrameLayout.LayoutParams(width, overlayHeigth + bottom);
+                parameters.Gravity = GravityFlags.Bottom;
+                bottomOverlay.LayoutParameters = parameters;
+                bottomOverlay.Invalidate();
+            }
         }
 
         private void RequestCameraPermission()
@@ -212,10 +250,10 @@ namespace ScanPac
                     }
 
                     // For still image captures, we use the largest available size.
-                    var customSize = new Size(640, 480);
+                    var sizes = Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg));
                     Size largest = (Size)Collections.Max(Arrays.AsList(map.GetOutputSizes((int)ImageFormatType.Jpeg)),
                         new CompareSizesByArea());
-                    mImageReader = ImageReader.NewInstance(customSize.Width, customSize.Height, ImageFormatType.Jpeg, /*maxImages*/2);
+                    mImageReader = ImageReader.NewInstance(CameraConstants.CustomSize.Width, CameraConstants.CustomSize.Height, ImageFormatType.Jpeg, /*maxImages*/2);
                     mImageReader.SetOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
 
                     // Find out if we need to swap dimension to get the preview size relative to sensor
@@ -273,12 +311,15 @@ namespace ScanPac
                     // Danger, W.R.! Attempting to use too large a preview size could  exceed the camera
                     // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
                     // garbage capture data.
-                    mPreviewSize = CameraHelper.ChooseOptimalSize(map.GetOutputSizes(Class.FromType(typeof(SurfaceTexture))),
+
+                    mPreviewSize = CameraConstants.CustomSize;
+                    /*mPreviewSize = CameraHelper.ChooseOptimalSize(map.GetOutputSizes(Class.FromType(typeof(SurfaceTexture))),
                         rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
-                        maxPreviewHeight, largest);
+                        maxPreviewHeight, largest);*/
 
                     // We fit the aspect ratio of TextureView to the size of preview we picked.
-                    SetTextureAspectRatio(Resources.Configuration.Orientation);
+                    mOrientation = Resources.Configuration.Orientation;
+                    SetTextureAspectRatio(mOrientation);
 
                     // Check if the flash is supported.
                     var available = (Boolean)characteristics.Get(CameraCharacteristics.FlashInfoAvailable);
@@ -310,6 +351,7 @@ namespace ScanPac
             }
             SetUpCameraOutputs(width, height);
             ConfigureTransform(width, height);
+            ConfigureOverlayViews(width, height);
             var activity = Activity;
             var manager = (CameraManager)activity.GetSystemService(Context.CameraService);
             try
@@ -573,14 +615,13 @@ namespace ScanPac
 
         private void SetTextureAspectRatio(Orientation orientation)
         {
-            var metrix = Resources.DisplayMetrics;
             if (orientation == Orientation.Landscape)
             {
-                mTextureView.SetAspectRatio(metrix.WidthPixels, metrix.HeightPixels);
+                mTextureView.SetAspectRatio(mPreviewSize.Width, mPreviewSize.Height);
             }
             else
             {
-                mTextureView.SetAspectRatio(metrix.HeightPixels, metrix.WidthPixels);
+                mTextureView.SetAspectRatio(mPreviewSize.Height, mPreviewSize.Width);
             }
         }
     }
