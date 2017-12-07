@@ -12,7 +12,7 @@ namespace ScanPac.Camera
         public static readonly int MAX_PREVIEW_WIDTH = 1920;
         // Max preview height that is guaranteed by Camera2 API
         public static readonly int MAX_PREVIEW_HEIGHT = 1080;
-        public static Size CustomSize = new Size(1280, 960);
+        public static Size CustomSize = new Size(960, 1280);
 
         public enum CameraStates
         {

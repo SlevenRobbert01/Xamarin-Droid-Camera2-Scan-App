@@ -64,7 +64,7 @@ namespace NativeScanLib
             {
                 return ParsePassportType2(new string[] { matchType2Line1.Value, matchType2Line2.Value });
             }
-            if(matchType3Line1.Success && matchType3Line2.Sugccess && matchType3Line3.Success)
+            if(matchType3Line1.Success && matchType3Line2.Success && matchType3Line3.Success)
             {
                 return ParsePassportType3(new string[]{matchType3Line1.Value, matchType3Line2.Value,matchType3Line3.Value});
             }

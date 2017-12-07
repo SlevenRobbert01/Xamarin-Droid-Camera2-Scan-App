@@ -1,22 +1,22 @@
 ﻿<Properties StartupConfiguration="{162B5202-48DB-414C-AD6E-D5E28C301A91}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Camera/ErrorDialog.cs">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="MainActivity.cs" Line="12" Column="1" />
+      <File FileName="MainActivity.cs" Line="23" Column="9" />
       <File FileName="ScanActivity.cs" Line="27" Column="13" />
       <File FileName="Camera/CameraActivity.cs" Line="45" Column="54" />
-      <File FileName="Camera/Camera2BasicFragment.cs" Line="207" Column="21" />
-      <File FileName="scanmodules/TesseractScanModule.cs" Line="51" Column="25" />
-      <File FileName="Camera/Listeners/ImageAvailableListener.cs" Line="87" Column="1" />
+      <File FileName="Camera/Camera2BasicFragment.cs" Line="201" Column="36" />
+      <File FileName="scanmodules/TesseractScanModule.cs" Line="91" Column="1" />
+      <File FileName="Camera/Listeners/ImageAvailableListener.cs" Line="83" Column="17" />
       <File FileName="Camera/Listeners/CameraCaptureListener.cs" Line="85" Column="13" />
       <File FileName="Camera/Listeners/CameraCaptureStillPictureSessionCallback.cs" Line="36" Column="10" />
       <File FileName="Camera/Listeners/CameraStateListener.cs" Line="15" Column="19" />
       <File FileName="Camera/Listeners/CameraCaptureSessionCallback.cs" Line="43" Column="99" />
       <File FileName="Camera/Listeners/Camera2BasicSurfaceTextureListener.cs" Line="17" Column="1" />
-      <File FileName="Camera/Helpers/BitmapHelper.cs" Line="68" Column="10" />
+      <File FileName="Camera/Helpers/BitmapHelper.cs" Line="9" Column="6" />
       <File FileName="Camera/AutoFitTextureView.cs" Line="55" Column="4" />
       <File FileName="Camera/CompareSizesByArea.cs" Line="9" Column="27" />
       <File FileName="Properties/AndroidManifest.xml" Line="6" Column="12" />
-      <File FileName="NativeScanLib/PassportParser.cs" Line="234" Column="35" />
+      <File FileName="NativeScanLib/PassportParser.cs" Line="74" Column="9" />
       <File FileName="NativeScanLib/Enums/Enums.cs" Line="6" Column="6" />
       <File FileName="NativeScanLib/Models/PassportModel.cs" Line="18" Column="25" />
       <File FileName="NativeScanLib/Constants.cs" Line="8" Column="9" />
@@ -26,17 +26,16 @@
       <File FileName="NativeScanLib/Helpers/PassportParserHelper.cs" Line="43" Column="23" />
       <File FileName="Camera/Classes/ShowToastRunnable.cs" Line="23" Column="6" />
       <File FileName="Camera/Helpers/CameraHelper.cs" Line="41" Column="14" />
-      <File FileName="Camera/Classes/CameraConstants.cs" Line="15" Column="38" />
+      <File FileName="Camera/Classes/CameraConstants.cs" Line="15" Column="8" />
       <File FileName="Camera/ErrorDialog.cs" Line="1" Column="1" />
+      <File FileName="packages.config" Line="15" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/robbertsleven/Documents/Projects/ScanPac/Camera/Camera2BasicFragment.cs" relfile="Camera/Camera2BasicFragment.cs" line="495" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.ScanPac AndroidDesignerPreferredDevice="Nexus 5" PreferredExecutionTarget="Android.4d7fcb16" />
+  <MonoDevelop.Ide.ItemProperties.ScanPac AndroidDesignerPreferredDevice="Nexus 5" PreferredExecutionTarget="Android.ZY223MS3CQ" />
 </Properties>

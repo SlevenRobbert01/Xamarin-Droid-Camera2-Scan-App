@@ -5,7 +5,7 @@ using Java.Nio;
 
 namespace ScanPac.Camera.Helpers
 {
-    public static class BitmapHelper
+    public class BitmapHelper
     {
         public static Bitmap BytesToBitmap(byte[] bytes){
             return BitmapFactory.DecodeByteArray(bytes, 0, bytes.Length);

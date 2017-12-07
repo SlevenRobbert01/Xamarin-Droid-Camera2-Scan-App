@@ -172,9 +172,11 @@ namespace ScanPac
             base.OnConfigurationChanged(newConfig);
         }
 
-        private void ConfigureOverlayViews(int width, int height)
+        private void ConfigureOverlayViews(int width)
         {
-            var overlayHeigth = height / 3;
+            float ratio = (float)CameraConstants.CustomSize.Height / (float)CameraConstants.CustomSize.Width;
+            var height = width * ratio;
+            int overlayHeigth = (int)(height / 3);
             if (topOverlay != null)
             {
                 topOverlay.SetBackgroundColor(Color.Black); // black with a variable alpha
@@ -188,7 +190,7 @@ namespace ScanPac
 
             if(bottomOverlay != null){
                 var screenHeight = Resources.DisplayMetrics.HeightPixels;
-                var bottom = screenHeight - height;
+                var bottom = (int)(screenHeight - height);
 
                 bottomOverlay.SetBackgroundColor(Color.Black); // black with a variable alpha
                 bottomOverlay.Background.SetAlpha(90);
@@ -312,10 +314,9 @@ namespace ScanPac
                     // bus' bandwidth limitation, resulting in gorgeous previews but the storage of
                     // garbage capture data.
 
-                    mPreviewSize = CameraConstants.CustomSize;
-                    /*mPreviewSize = CameraHelper.ChooseOptimalSize(map.GetOutputSizes(Class.FromType(typeof(SurfaceTexture))),
+                    mPreviewSize = CameraHelper.ChooseOptimalSize(map.GetOutputSizes(Class.FromType(typeof(SurfaceTexture))),
                         rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
-                        maxPreviewHeight, largest);*/
+                        maxPreviewHeight, largest);
 
                     // We fit the aspect ratio of TextureView to the size of preview we picked.
                     mOrientation = Resources.Configuration.Orientation;
@@ -351,7 +352,7 @@ namespace ScanPac
             }
             SetUpCameraOutputs(width, height);
             ConfigureTransform(width, height);
-            ConfigureOverlayViews(width, height);
+            ConfigureOverlayViews(width);
             var activity = Activity;
             var manager = (CameraManager)activity.GetSystemService(Context.CameraService);
             try

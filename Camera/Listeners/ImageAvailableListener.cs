@@ -79,10 +79,9 @@ namespace ScanPac.Listeners
                 sw.Start();
 
                 var bitmap = BitmapHelper.BytesToBitmap(bytes);
-                var middle = CameraConstants.CustomSize.Height / 2;
 
-                var x1 = (middle - (middle / 2));
-                var x2 = (middle + (middle / 2));
+                var x1 = CameraConstants.CustomSize.Height / 3;
+                var x2 = (CameraConstants.CustomSize.Height - x1);
 
                 bitmap = BitmapHelper.CropBitmap(bitmap, x1, x2);
                 bitmap = BitmapHelper.GrayscaleToBin(bitmap);
